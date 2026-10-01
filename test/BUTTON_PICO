@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+// defined pins to use
+#define LED_PIN 25
+#define button 14
+
+// i have to initialize and set what pin, and what it does.
+void BUTTON_INIT(void)
+{
+gpio_pull_up(button);
+gpio_init(button);
+gpio_set_dir(button, GPIO_IN);
+}
+void PICO_LED_INIT(void) 
+{ 
+gpio_init(LED_PIN); 
+gpio_set_dir(LED_PIN, GPIO_OUT);
+}
+// i set a function that receive if the led is on or off
+//and for the button if it´s pressed
+void SET_LED_PIN (bool led_on)
+{
+gpio_put(LED_PIN, led_on );
+}
+int GET_BUTTON (void)
+{
+bool estado_pin = gpio_get(button);
+if(estado_pin == false){return 1;}
+
+else {return 0;}
+
+}
+int main()
+{ 
+  int bot; // a int variable to get the state of the button
+  BUTTON_INIT();
+  PICO_LED_INIT();
+  while(1) 
+  {
+   bot = GET_BUTTON();
+   if(bot==1){
+   SET_LED_PIN (true);
+   sleep_ms (500);
+             }
+   else {
+   SET_LED_PIN (false);
+   sleep_ms (500);
+        }
+  }
+
+
+
+}
